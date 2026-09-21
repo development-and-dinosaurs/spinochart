@@ -5,13 +5,37 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      publish_core:
+        description: 'Publish spinochart-core to Maven Central'
+        type: boolean
+        default: true
+      publish_cli:
+        description: 'Publish spinochart-cli to Maven Central'
+        type: boolean
+        default: true
+      publish_plugin:
+        description: 'Publish Gradle Plugin (Maven Central & Plugin Portal)'
+        type: boolean
+        default: true
+      create_github_release:
+        description: 'Build & attach CLI distributions to GitHub Release'
+        type: boolean
+        default: true
+      tag_name:
+        description: 'Tag name for release (if not triggered by tag push)'
+        type: string
+        default: 'v0.0.1'
+
+permissions:
+  contents: write
 
 jobs:
-  publish:
-    name: 🦖 Release to the Wild
+  publish-core:
+    name: 📦 Publish Core (Maven Central)
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    timeout-minutes: 30
+    if: github.event_name == 'push' || inputs.publish_core
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,8 +51,64 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Publish to Maven Central & Gradle Plugin Portal
-        run: ./gradlew publish publishPlugins
+      - name: Publish spinochart-core
+        run: ./gradlew :modules:spinochart-core:publish
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKeyBase64: ${{ secrets.SIGNING_KEY_BASE64 }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+
+  publish-cli:
+    name: 💻 Publish CLI (Maven Central)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.event_name == 'push' || inputs.publish_cli
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Publish spinochart-cli
+        run: ./gradlew :modules:spinochart-cli:publish
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKeyBase64: ${{ secrets.SIGNING_KEY_BASE64 }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+
+  publish-plugin:
+    name: 🔌 Publish Plugin (Portal & Maven Central)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.event_name == 'push' || inputs.publish_plugin
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Publish spinochart-gradle-plugin
+        run: ./gradlew :modules:spinochart-gradle-plugin:publish :modules:spinochart-gradle-plugin:publishPlugins
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
@@ -37,12 +117,41 @@ jobs:
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
           GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
 
-      - name: Build standalone CLI binary
-        run: ./gradlew :modules:spinochart-cli:installCli :modules:spinochart-cli:distZip
+  github-release:
+    name: 🚀 GitHub Release & CLI Distribution
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || inputs.create_github_release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Create GitHub Release
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build standalone CLI distributions
+        run: ./gradlew :modules:spinochart-cli:installCli :modules:spinochart-cli:distZip :modules:spinochart-cli:fatJar
+
+      - name: Determine Release Tag
+        id: release_tag
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ inputs.tag_name || 'v0.0.1' }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.release_tag.outputs.tag }}
           files: |
             modules/spinochart-cli/build/bin/spinochart
             modules/spinochart-cli/build/distributions/spinochart-cli-*.zip

@@ -33,7 +33,7 @@ gradlePlugin {
 mavenPublishing {
   publishToMavenCentral(
       automaticRelease = true,
-      validateDeployment = DeploymentValidation.PUBLISHED,
+      validateDeployment = DeploymentValidation.VALIDATED,
   )
   signAllPublications()
   pom {
