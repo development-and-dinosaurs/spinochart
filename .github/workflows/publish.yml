@@ -24,6 +24,9 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v5
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Publish to Maven Central & Gradle Plugin Portal
         run: ./gradlew publish publishPlugins
         env:
