@@ -1,0 +1,37 @@
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Kotlin
+.kotlin/
+
+# IDEs & Editors
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+
+# Output & Binaries
+out/
+target/
+**/target/
+bin/
+
+# Gatling simulation results & logs
+results/
+**/results/
+*.log
+!**/src/test/resources/*.log
+
+# OS & Temp
+.DS_Store
+Thumbs.db
+*.swp
+*~
