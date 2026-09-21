@@ -136,8 +136,8 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build standalone CLI distributions
-        run: ./gradlew :modules:spinochart-cli:installCli :modules:spinochart-cli:distZip :modules:spinochart-cli:fatJar
+      - name: Build standalone CLI binary
+        run: ./gradlew :modules:spinochart-cli:installCli
 
       - name: Determine Release Tag
         id: release_tag
@@ -152,10 +152,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release_tag.outputs.tag }}
-          files: |
-            modules/spinochart-cli/build/bin/spinochart
-            modules/spinochart-cli/build/distributions/spinochart-cli-*.zip
-            modules/spinochart-cli/build/libs/spinochart-cli-*-all.jar
+          files: modules/spinochart-cli/build/bin/spinochart
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
