@@ -23,7 +23,7 @@ configure<PublishingExtension> {
         license {
           name.set("The MIT License")
           url.set("https://opensource.org/licenses/MIT")
-          distribution.set("https://opensource.org/licenses/MIT")
+          distribution.set("repo")
         }
       }
       developers {
