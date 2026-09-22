@@ -24,8 +24,8 @@ gradlePlugin {
       description = "Open-source, Highcharts-free performance reports for Gatling"
       implementationClass = "uk.co.developmentanddinosaurs.spinochart.plugin.SpinochartPlugin"
       tags.set(listOf("gatling", "reporting", "performance", "charts", "svg"))
-      vcsUrl = "https://github.com/development-and-dinosaurs/gatling-charts"
-      website = "https://github.com/development-and-dinosaurs/gatling-charts"
+      vcsUrl = "https://github.com/development-and-dinosaurs/spinochart"
+      website = "https://github.com/development-and-dinosaurs/spinochart"
     }
   }
 }

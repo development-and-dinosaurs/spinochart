@@ -18,7 +18,7 @@ configure<PublishingExtension> {
   publications.withType<MavenPublication> {
     pom {
       inceptionYear.set("2026")
-      url.set("https://github.com/development-and-dinosaurs/gatling-charts/")
+      url.set("https://github.com/development-and-dinosaurs/spinochart/")
       licenses {
         license {
           name.set("The MIT License")
@@ -35,10 +35,10 @@ configure<PublishingExtension> {
         }
       }
       scm {
-        url.set("https://github.com/development-and-dinosaurs/gatling-charts/")
-        connection.set("scm:git:git://github.com/development-and-dinosaurs/gatling-charts.git")
+        url.set("https://github.com/development-and-dinosaurs/spinochart/")
+        connection.set("scm:git:git://github.com/development-and-dinosaurs/spinochart.git")
         developerConnection.set(
-            "scm:git:ssh://git@github.com/development-and-dinosaurs/gatling-charts.git"
+            "scm:git:ssh://git@github.com/development-and-dinosaurs/spinochart.git"
         )
       }
     }
