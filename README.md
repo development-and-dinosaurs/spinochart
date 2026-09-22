@@ -46,7 +46,7 @@ The report is generated beside `simulation.log` in `build/reports/gatling/<simul
 
 ### 2. Command-line interface (CLI)
 
-Download the standalone binary from [GitHub Releases](https://github.com/development-and-dinosaurs/gatling-charts/releases):
+Download the standalone binary from [GitHub Releases](https://github.com/development-and-dinosaurs/spinochart/releases):
 
 ```bash
 chmod +x spinochart
