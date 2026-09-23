@@ -6,6 +6,7 @@ plugins {
 }
 
 group = "uk.co.developmentanddinosaurs"
+
 version = scmVersion.version
 
 subprojects {
