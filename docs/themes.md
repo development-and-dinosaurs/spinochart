@@ -15,7 +15,7 @@ To use:
 
 ### Highlights
 
-* **KPI Summary Cards** — Key metrics prominently displayed: Total Requests, Success Rate, Failure Rate, and Latency stats (Mean, Min, P50, P75, P90, P95, P99, Max).
+* **KPI Summary Cards** — Key metrics prominently displayed: Total Requests, Success Rate, Failure Rate, Mean Latency, Median (P50), P95, P99, and Max Latency.
 * **Vector SVG Charts**:
     * **Response Time Percentiles over Time** — P50, P75, P95, and P99 latency progression.
     * **Throughput over Time** — Requests per second (OK vs KO) as a dual-series area chart.
@@ -37,8 +37,8 @@ To use:
 
 ### Highlights
 
-* **Familiar Aesthetics** — Recreates the classic Gatling Highcharts layout, color palette (Gatling orange `#ff9900`, success green `#82c91e`, failure red `#e03131`), and typography.
-* **100% MIT Licensed** — Delivers the familiar look and feel of Gatling's traditional dashboard while eliminating the proprietary Highcharts runtime and license restrictions.
+* **Familiar Aesthetics** — Recreates the classic Gatling Highcharts layout, color palette: OK (`#68b65c`), KO (`#f15b4f`), Total (`#ffa900`), and Blue (`#5E7BE2`).
+* **100% MIT Licensed** — Delivers the familiar look and feel of Gatling's traditional dashboard while eliminating proprietary Highcharts runtime and license restrictions.
 * **Air-Gapped Clean** — Uses pure inline SVG elements with no external scripts, fonts, or stylesheets.
 
 ---
