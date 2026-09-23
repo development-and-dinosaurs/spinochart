@@ -10,11 +10,11 @@ SpinoChart reads Gatling binary `simulation.log` files and generates standalone,
 
 ## Why SpinoChart?
 
-Standard Gatling HTML reports bundle Highcharts, which requires a separate commercial license for enterprise or commercial use.
+While Gatling's core load-testing engine is open-source (Apache 2.0), the standard HTML report generator (`gatling-charts-highcharts`) is **not open source**—it is distributed under the proprietary "Gatling Highcharts License," which strictly prohibits modifying the reporting code or extracting the bundled charting library.
 
-SpinoChart replaces that dependency with an independent reporting engine:
+SpinoChart provides a **100% open-source, MIT-licensed reporting engine**:
 
-* **100% MIT Licensed** — Freely usable in commercial, enterprise, and closed-source environments without licensing fees or legal friction.
+* **True Open Source (MIT)** — Completely free and open source. Easily passes corporate open-source review boards and legal compliance scanners without non-OSI proprietary licensing exceptions.
 * **Zero External Dependencies** — Single-file HTML output with embedded CSS and inline vector SVGs. No CDN calls, no tracking, and fully air-gapped compliant.
 * **Interactive Visualizations** — Clean SVG graphs with custom tooltip crosshairs for response time percentiles, throughput (RPS OK vs KO), and active users over time.
 * **Dark & Light Mode** — Built-in theme toggling with high-density layouts optimized for performance engineering.

@@ -81,8 +81,8 @@ for (req in report.requestStats) {
 }
 
 // Time-series data
-report.throughputOverTime.forEach { point ->
-    println("Time: ${point.timestampEpochMs} -> RPS: ${point.totalCount}")
+report.requestsPerSecondOverTime.forEach { point ->
+    println("Time: ${point.timestampEpochMs} -> Total: ${point.total}, OK: ${point.ok}, KO: ${point.ko}")
 }
 ```
 
@@ -94,13 +94,15 @@ report.throughputOverTime.forEach { point ->
 
 Contains the complete parsed and aggregated representation of a Gatling simulation run:
 
-* `runInfo: RunInfo` — Simulation class name, ID, start and end epoch timestamps.
+* `runInfo: RunInfo` — Simulation class name, run ID, description, start/end timestamps, and duration.
 * `globalStats: RequestStats` — Aggregated metrics across all requests in the simulation.
 * `requestStats: List<RequestStats>` — Metrics partitioned by individual request name.
-* `percentilesOverTime: List<PercentilePoint>` — Bucketized response time percentiles (P50, P75, P95, P99) over time.
-* `throughputOverTime: List<ThroughputPoint>` — Requests per second (OK, KO, total) over time.
-* `activeUsersOverTime: List<ActiveUsersPoint>` — Concurrently active users per scenario over time.
-* `errorStats: List<ErrorStats>` — Grouped error messages, counts, and percentages.
+* `errors: List<ErrorInfo>` — Grouped error messages, counts, and percentages.
+* `activeUsersOverTime: List<TimeSeriesPoint<Int>>` — Concurrently active user counts over time.
+* `requestsPerSecondOverTime: List<RpsPoint>` — Requests dispatched per second (total, OK, KO) over time.
+* `responsesPerSecondOverTime: List<RpsPoint>` — Responses received per second (total, OK, KO) over time.
+* `percentilesOverTime: List<PercentilesPoint>` — Bucketized response time percentiles (min, P50, P75, P95, P99, max) over time.
+* `ranges: ResponseTimeRanges?` — Response time distribution counts and percentages (low, middle, high, KO).
 
 ### `RequestStats`
 
@@ -112,16 +114,15 @@ Calculated metrics for global simulation or individual request endpoints:
 | `totalCount` | `Long` | Total executed requests |
 | `okCount` | `Long` | Number of successful (`OK`) requests |
 | `koCount` | `Long` | Number of failed (`KO`) requests |
-| `minResponseTimeMs` | `Long` | Minimum response time recorded |
-| `maxResponseTimeMs` | `Long` | Maximum response time recorded |
-| `meanResponseTimeMs` | `Double` | Arithmetic mean of response times |
+| `minResponseTimeMs` | `Double` | Minimum response time recorded (ms) |
+| `maxResponseTimeMs` | `Double` | Maximum response time recorded (ms) |
+| `meanResponseTimeMs` | `Double` | Arithmetic mean of response times (ms) |
 | `stdDevResponseTimeMs` | `Double` | Standard deviation of response times |
-| `p50ResponseTimeMs` | `Long` | 50th percentile (median) response time |
-| `p75ResponseTimeMs` | `Long` | 75th percentile response time |
-| `p90ResponseTimeMs` | `Long` | 90th percentile response time |
-| `p95ResponseTimeMs` | `Long` | 95th percentile response time |
-| `p99ResponseTimeMs` | `Long` | 99th percentile response time |
-| `meanRps` | `Double` | Average requests per second across simulation duration |
+| `p50ResponseTimeMs` | `Double` | 50th percentile (median) response time (ms) |
+| `p75ResponseTimeMs` | `Double` | 75th percentile response time (ms) |
+| `p95ResponseTimeMs` | `Double` | 95th percentile response time (ms) |
+| `p99ResponseTimeMs` | `Double` | 99th percentile response time (ms) |
+| `meanRequestsPerSec` | `Double` | Average requests per second across simulation duration |
 
 ---
 
