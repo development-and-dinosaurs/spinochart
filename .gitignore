@@ -23,6 +23,7 @@ out/
 target/
 **/target/
 bin/
+site/
 
 # Gatling simulation results & logs
 results/
