@@ -5,6 +5,6 @@ plugins {
 }
 
 allprojects {
-  group = "uk.co.developmentanddinosaurs.spinochart"
+  group = "uk.co.developmentanddinosaurs"
   version = "0.0.2"
 }

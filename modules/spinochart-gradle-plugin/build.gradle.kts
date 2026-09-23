@@ -20,7 +20,7 @@ gradlePlugin {
   plugins {
     create("spinochart") {
       id = "uk.co.developmentanddinosaurs.spinochart"
-      displayName = "SpinoChart Gradle Plugin"
+      displayName = "SpinoChart"
       description = "Open-source, Highcharts-free performance reports for Gatling"
       implementationClass = "uk.co.developmentanddinosaurs.spinochart.plugin.SpinochartPlugin"
       tags.set(listOf("gatling", "reporting", "performance", "charts", "svg"))
