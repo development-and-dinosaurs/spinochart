@@ -1,0 +1,61 @@
+site_name: SpinoChart
+site_description: Open-source, Highcharts-free performance reports for Gatling.
+site_url: https://development-and-dinosaurs.github.io/spinochart/
+repo_url: https://github.com/development-and-dinosaurs/spinochart
+repo_name: development-and-dinosaurs/spinochart
+
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/favicon.png
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
+
+nav:
+  - Home: index.md
+  - Quick start: quick-start.md
+  - Guides:
+    - Gradle plugin: gradle-plugin.md
+    - Command-line interface: cli.md
+    - Library usage: library.md
+    - Themes: themes.md
+  - Contributing: contributing.md
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - tables
+  - toc:
+      permalink: true

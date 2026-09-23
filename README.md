@@ -1,8 +1,14 @@
+![SpinoChart](docs/assets/banner.png)
+
 # SpinoChart
+
+<img src="docs/assets/logo.png" align="right" width="120" alt="SpinoChart logo" />
 
 Open-source, Highcharts-free performance reports for Gatling.
 
 SpinoChart reads Gatling binary `simulation.log` files and generates standalone, interactive HTML dashboards with pure vector SVG charts — 100% MIT-licensed, air-gapped, and zero external JS/CSS dependencies.
+
+[Documentation](https://development-and-dinosaurs.github.io/spinochart/) · [GitHub Releases](https://github.com/development-and-dinosaurs/spinochart/releases)
 
 ---
 
