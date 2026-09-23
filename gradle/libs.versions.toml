@@ -1,4 +1,5 @@
 [versions]
+axionRelease = "1.21.1"
 kotest = "6.0.7"
 kotlin = "2.2.21"
 spotless = "8.1.0"
@@ -20,6 +21,7 @@ gatling-core = { module = "io.gatling:gatling-core", version.ref = "gatling" }
 gatling-charts-highcharts = { module = "io.gatling.highcharts:gatling-charts-highcharts", version.ref = "gatling" }
 
 [plugins]
+axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axionRelease" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 gatling = { id = "io.gatling.gradle", version.ref = "gatlingGradle" }
