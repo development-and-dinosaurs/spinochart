@@ -24,6 +24,7 @@ target/
 **/target/
 bin/
 site/
+dist/
 
 # Gatling simulation results & logs
 results/
