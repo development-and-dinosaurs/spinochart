@@ -1,0 +1,58 @@
+docs_dir = 'docs'
+out_dir = 'dist'
+extra_css = ['stylesheets/extra.css']
+
+[site]
+name = 'SpinoChart'
+description = 'Open-source, Highcharts-free performance reports for Gatling.'
+author = ''
+repo_url = 'https://github.com/development-and-dinosaurs/spinochart'
+base_url = 'https://spinochart.developmentanddinosaurs.co.uk'
+version = ''
+edit_branch = 'main'
+
+[theme]
+accent = 'emerald'
+dark_mode = 'auto'
+logo_text = '🦕 SpinoChart'
+
+[features]
+search = true
+mermaid = true
+copy_button = true
+llms_txt = true
+math = false
+repo_stats = true
+reading_time = true
+edit_link = true
+
+[[nav]]
+title = 'Home'
+path = 'index.md'
+
+[[nav]]
+title = 'Quick start'
+path = 'quick-start.md'
+
+[[nav]]
+title = 'Guides'
+
+[[nav.children]]
+title = 'Gradle plugin'
+path = 'gradle-plugin.md'
+
+[[nav.children]]
+title = 'Command-line interface'
+path = 'cli.md'
+
+[[nav.children]]
+title = 'Library usage'
+path = 'library.md'
+
+[[nav.children]]
+title = 'Themes'
+path = 'themes.md'
+
+[[nav]]
+title = 'Contributing'
+path = 'contributing.md'
