@@ -59,7 +59,7 @@ class SpinoLogReader(
         }
 
     val activeUsers =
-        CollectionConverters.asJava(data.numberOfActiveSessionsPerSecond(Option.empty())).map {
+        CollectionConverters.asJava(data.maxNumberOfConcurrentUsersPerSecond(Option.empty())).map {
           TimeSeriesPoint(
               timestampEpochMs = it.time().toLong() * 1000,
               value = it.value(),
@@ -71,7 +71,7 @@ class SpinoLogReader(
             .map {
               RpsPoint(
                   timestampEpochMs = it.time().toLong() * 1000,
-                  total = it.total(),
+                  total = it.oks() + it.kos(),
                   ok = it.oks(),
                   ko = it.kos(),
               )
@@ -82,7 +82,7 @@ class SpinoLogReader(
             .map {
               RpsPoint(
                   timestampEpochMs = it.time().toLong() * 1000,
-                  total = it.total(),
+                  total = it.oks() + it.kos(),
                   ok = it.oks(),
                   ko = it.kos(),
               )
@@ -147,27 +147,31 @@ class SpinoLogReader(
       requestName: Option<String>,
       group: Option<Group>,
   ): RequestStats {
-    val allStats = data.requestGeneralStats(requestName, group, Option.empty())
-    val okStats = data.requestGeneralStats(requestName, group, Option.apply(Status.apply("OK")))
-    val koStats = data.requestGeneralStats(requestName, group, Option.apply(Status.apply("KO")))
+    val allStatsOpt = data.requestGeneralStats(requestName, group, Option.empty())
+    val okStatsOpt = data.requestGeneralStats(requestName, group, Option.apply(Status.apply("OK")))
+    val koStatsOpt = data.requestGeneralStats(requestName, group, Option.apply(Status.apply("KO")))
 
-    fun Double.percentileOf(stats: GeneralStats): Double =
-        (stats.percentile().apply(this) as Number).toDouble()
+    val allStats = if (allStatsOpt.isDefined) allStatsOpt.get() else null
+    val okCount = if (okStatsOpt.isDefined) okStatsOpt.get().count() else 0L
+    val koCount = if (koStatsOpt.isDefined) koStatsOpt.get().count() else 0L
+
+    fun Double.percentileOf(stats: GeneralStats?): Double =
+        stats?.let { (it.percentile().apply(this) as Number).toDouble() } ?: 0.0
 
     return RequestStats(
         name = name,
-        totalCount = allStats.count(),
-        okCount = okStats.count(),
-        koCount = koStats.count(),
-        minResponseTimeMs = allStats.min().toDouble(),
-        maxResponseTimeMs = allStats.max().toDouble(),
-        meanResponseTimeMs = allStats.mean().toDouble(),
-        stdDevResponseTimeMs = allStats.stdDev().toDouble(),
+        totalCount = allStats?.count() ?: 0L,
+        okCount = okCount,
+        koCount = koCount,
+        minResponseTimeMs = allStats?.min()?.toDouble() ?: 0.0,
+        maxResponseTimeMs = allStats?.max()?.toDouble() ?: 0.0,
+        meanResponseTimeMs = allStats?.mean()?.toDouble() ?: 0.0,
+        stdDevResponseTimeMs = allStats?.stdDev()?.toDouble() ?: 0.0,
         p50ResponseTimeMs = 50.0.percentileOf(allStats),
         p75ResponseTimeMs = 75.0.percentileOf(allStats),
         p95ResponseTimeMs = 95.0.percentileOf(allStats),
         p99ResponseTimeMs = 99.0.percentileOf(allStats),
-        meanRequestsPerSec = allStats.meanRequestsPerSec(),
+        meanRequestsPerSec = allStats?.meanRequestsPerSec() ?: 0.0,
     )
   }
 }
