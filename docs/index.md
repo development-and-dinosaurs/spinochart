@@ -22,6 +22,12 @@ SpinoChart provides a **100% open-source, MIT-licensed reporting engine**:
 
 ---
 
+## Compatibility
+
+SpinoChart supports Gatling 3.15.x.
+
+---
+
 ## Artifacts
 
 SpinoChart is distributed across three modules:

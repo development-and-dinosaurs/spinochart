@@ -8,7 +8,7 @@
 
 Open-source, Highcharts-free performance reports for Gatling.
 
-SpinoChart reads Gatling binary `simulation.log` files and generates standalone, interactive HTML dashboards with pure vector SVG charts — 100% MIT-licensed, air-gapped, and zero external JS/CSS dependencies.
+SpinoChart reads Gatling binary `simulation.log` files (compatible with Gatling 3.15+) and generates standalone, interactive HTML dashboards with pure vector SVG charts — 100% MIT-licensed, air-gapped, and zero external JS/CSS dependencies.
 
 [Documentation](https://spinochart.developmentanddinosaurs.co.uk) · [GitHub Releases](https://github.com/development-and-dinosaurs/spinochart/releases)
 
@@ -72,6 +72,17 @@ You can also pass an explicit results folder or file:
 # Process a single log file with custom output destination
 ./spinochart path/to/simulation.log custom-report.html
 ```
+
+#### CI/CD failure handling
+
+When Gatling assertions fail, it exits with code `2`. To generate reports without short-circuiting shell chains:
+
+```bash
+./bin/gatling.sh ... ; GATLING_EXIT=$? ; ./spinochart ; exit $GATLING_EXIT
+```
+
+In GitHub Actions, add `if: always()` to the report generation and artifact upload steps.
+
 
 ### 3. Library
 

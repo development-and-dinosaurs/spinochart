@@ -16,7 +16,7 @@ plugins {
 }
 ```
 
-When applied alongside the official Gatling plugin (`io.gatling.gradle`), SpinoChart automatically attaches a `spinochartReport` task that finalizes all `gatlingRun*` tasks.
+When applied alongside the official Gatling plugin (`io.gatling.gradle`), SpinoChart automatically attaches a `spinochartReport` task that finalizes all `gatlingRun*` tasks — even if simulation assertions fail.
 
 Run your simulation:
 

@@ -92,7 +92,28 @@ Options:
 
 Because the CLI is a single file with zero external runtime dependencies, it integrates cleanly into CI pipelines.
 
-### GitHub Actions Example
+### Handling Assertion Failures in CI/CD
+
+When simulation assertions fail, Gatling exits with code `2` (`AssertionsFailed`).
+
+Chaining commands with `&&` (such as `gatling.sh && spinochart`) skips report generation when Gatling exits non-zero. To generate the report while still failing the CI build on test failures:
+
+#### Shell Scripts
+
+Capture Gatling's exit code, run SpinoChart, and propagate the exit code:
+
+```bash
+./bin/gatling.sh -rm local -s MySimulation
+GATLING_EXIT=$?
+
+spinochart results/
+
+exit $GATLING_EXIT
+```
+
+#### GitHub Actions
+
+Use `if: always()` on the report generation and artifact upload steps:
 
 ```yaml
 name: Performance Tests
@@ -113,16 +134,23 @@ jobs:
         run: ./gradlew gatlingRun
 
       - name: Download SpinoChart CLI
+        if: always()
         run: |
           curl -LO https://github.com/development-and-dinosaurs/spinochart/releases/latest/download/spinochart
           chmod +x spinochart
 
       - name: Generate Reports
+        if: always()
         run: ./spinochart build/reports/gatling/
 
       - name: Upload HTML Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: gatling-spinochart-report
           path: build/reports/gatling/**/index.html
 ```
+
+!!! tip "Gradle Plugin Alternative"
+    If using the [SpinoChart Gradle plugin](gradle-plugin.md), `spinochartReport` is automatically hooked via Gradle's `finalizedBy`. Gradle will still generate the report even if `gatlingRun` fails, so you only need `if: always()` on the `actions/upload-artifact` step in your pipeline.
+

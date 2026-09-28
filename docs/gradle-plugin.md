@@ -58,6 +58,20 @@ When applied to a project containing the official Gatling plugin (`io.gatling.gr
 
 After Gatling finishes executing and writes `simulation.log`, `spinochartReport` runs and generates `index.html` directly in the simulation run folder.
 
+Because `spinochartReport` is attached via `finalizedBy`, it runs even if Gatling assertions fail. In CI/CD pipelines, set `if: always()` on your artifact upload step so reports are published on test failures:
+
+```yaml
+- name: Run Gatling Simulations
+  run: ./gradlew gatlingRun
+
+- name: Upload HTML Report
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: gatling-spinochart-report
+    path: build/reports/gatling/**/index.html
+```
+
 ### Manual Task Execution
 You can also run the report generation task on demand:
 
